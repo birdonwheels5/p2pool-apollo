@@ -251,7 +251,7 @@ def main(args, net, datadir_path, merged_urls, worker_endpoint):
             from twisted.words.protocols import irc
             class IRCClient(irc.IRCClient):
                 nickname = '[CV]-%s-%i' % (net.PARENT.SYMBOL.upper(),random.randrange(100))
-		#nickname = 'xpool%02i' % (random.randrange(100),)
+                #nickname = 'p2pool%02i' % (random.randrange(100),)
                 channel = net.ANNOUNCE_CHANNEL
                 def lineReceived(self, line):
                     if p2pool.DEBUG:
