@@ -4,7 +4,16 @@ import platform
 from twisted.internet import defer
 
 from . import data
-from p2pool.util import math, pack
+from p2pool.util import math, pack, jsonrpc
+
+@defer.inlineCallbacks
+def check_genesis_block(bitcoind, genesis_block_hash):
+    try:
+        yield bitcoind.rpc_getblock(genesis_block_hash)
+    except jsonrpc.Error_for_code(-5):
+        defer.returnValue(False)
+    else:
+        defer.returnValue(True)
 
 nets = dict(
     bitcoin=math.Object(
@@ -13,7 +22,7 @@ nets = dict(
         ADDRESS_VERSION=0,
         RPC_PORT=8332,
         RPC_CHECK=defer.inlineCallbacks(lambda bitcoind: defer.returnValue(
-            'bitcoinaddress' in (yield bitcoind.rpc_help()) and
+            (yield check_genesis_block(bitcoind, '000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f')) and
             not (yield bitcoind.rpc_getinfo())['testnet']
         )),
         SUBSIDY_FUNC=lambda height: 50*100000000 >> (height + 1)//210000,
@@ -23,6 +32,7 @@ nets = dict(
         CONF_FILE_FUNC=lambda: os.path.join(os.path.join(os.environ['APPDATA'], 'Bitcoin') if platform.system() == 'Windows' else os.path.expanduser('~/Library/Application Support/Bitcoin/') if platform.system() == 'Darwin' else os.path.expanduser('~/.bitcoin'), 'bitcoin.conf'),
         BLOCK_EXPLORER_URL_PREFIX='https://blockchain.info/block/',
         ADDRESS_EXPLORER_URL_PREFIX='https://blockchain.info/address/',
+        TX_EXPLORER_URL_PREFIX='https://blockchain.info/tx/',
         SANE_TARGET_RANGE=(2**256//2**32//1000 - 1, 2**256//2**32 - 1),
         DUMB_SCRYPT_DIFF=1,
         DUST_THRESHOLD=0.001e8,
@@ -43,10 +53,55 @@ nets = dict(
         CONF_FILE_FUNC=lambda: os.path.join(os.path.join(os.environ['APPDATA'], 'Bitcoin') if platform.system() == 'Windows' else os.path.expanduser('~/Library/Application Support/Bitcoin/') if platform.system() == 'Darwin' else os.path.expanduser('~/.bitcoin'), 'bitcoin.conf'),
         BLOCK_EXPLORER_URL_PREFIX='http://blockexplorer.com/testnet/block/',
         ADDRESS_EXPLORER_URL_PREFIX='http://blockexplorer.com/testnet/address/',
+        TX_EXPLORER_URL_PREFIX='http://blockexplorer.com/testnet/tx/',
         SANE_TARGET_RANGE=(2**256//2**32//1000 - 1, 2**256//2**32 - 1),
         DUMB_SCRYPT_DIFF=1,
         DUST_THRESHOLD=1e8,
     ),
+
+    namecoin=math.Object(
+        P2P_PREFIX='f9beb4fe'.decode('hex'),
+        P2P_PORT=8334,
+        ADDRESS_VERSION=52,
+        RPC_PORT=8332,
+        RPC_CHECK=defer.inlineCallbacks(lambda bitcoind: defer.returnValue(
+            'namecoinaddress' in (yield bitcoind.rpc_help()) and
+            not (yield bitcoind.rpc_getinfo())['testnet']
+        )),
+        SUBSIDY_FUNC=lambda height: 50*100000000 >> (height + 1)//210000,
+        POW_FUNC=data.hash256,
+        BLOCK_PERIOD=600, # s
+        SYMBOL='NMC',
+        CONF_FILE_FUNC=lambda: os.path.join(os.path.join(os.environ['APPDATA'], 'Namecoin') if platform.system() == 'Windows' else os.path.expanduser('~/Library/Application Support/Namecoin/') if platform.system() == 'Darwin' else os.path.expanduser('~/.namecoin'), 'bitcoin.conf'),
+        BLOCK_EXPLORER_URL_PREFIX='http://explorer.dot-bit.org/b/',
+        ADDRESS_EXPLORER_URL_PREFIX='http://explorer.dot-bit.org/a/',
+        TX_EXPLORER_URL_PREFIX='http://explorer.dot-bit.org/tx/',
+        SANE_TARGET_RANGE=(2**256//2**32 - 1, 2**256//2**32 - 1),
+        DUMB_SCRYPT_DIFF=1,
+        DUST_THRESHOLD=0.2e8,
+    ),
+    namecoin_testnet=math.Object(
+        P2P_PREFIX='fabfb5fe'.decode('hex'),
+        P2P_PORT=18334,
+        ADDRESS_VERSION=111,
+        RPC_PORT=8332,
+        RPC_CHECK=defer.inlineCallbacks(lambda bitcoind: defer.returnValue(
+            'namecoinaddress' in (yield bitcoind.rpc_help()) and
+            (yield bitcoind.rpc_getinfo())['testnet']
+        )),
+        SUBSIDY_FUNC=lambda height: 50*100000000 >> (height + 1)//210000,
+        POW_FUNC=data.hash256,
+        BLOCK_PERIOD=600, # s
+        SYMBOL='tNMC',
+        CONF_FILE_FUNC=lambda: os.path.join(os.path.join(os.environ['APPDATA'], 'Namecoin') if platform.system() == 'Windows' else os.path.expanduser('~/Library/Application Support/Namecoin/') if platform.system() == 'Darwin' else os.path.expanduser('~/.namecoin'), 'bitcoin.conf'),
+        BLOCK_EXPLORER_URL_PREFIX='http://testnet.explorer.dot-bit.org/b/',
+        ADDRESS_EXPLORER_URL_PREFIX='http://testnet.explorer.dot-bit.org/a/',
+        TX_EXPLORER_URL_PREFIX='http://testnet.explorer.dot-bit.org/tx/',
+        SANE_TARGET_RANGE=(2**256//2**32 - 1, 2**256//2**32 - 1),
+        DUMB_SCRYPT_DIFF=1,
+        DUST_THRESHOLD=1e8,
+    ),
+
     litecoin=math.Object(
         P2P_PREFIX='fbc0b6db'.decode('hex'),
         P2P_PORT=9333,
@@ -494,6 +549,27 @@ if platform.system() == 'Darwin' else os.path.expanduser('~/.kittehcoin'), 'kitt
         DUMB_SCRYPT_DIFF=2**16,
         DUST_THRESHOLD=0.000001,
     ),
+   nyancoin=math.Object(
+       P2P_PREFIX='fcd9b7dd'.decode('hex'),
+       P2P_PORT=33701,
+       ADDRESS_VERSION=45,
+       RPC_PORT=33700,
+       RPC_CHECK=defer.inlineCallbacks(lambda bitcoind: defer.returnValue(
+           'nyancoin address' in (yield bitcoind.rpc_help()) and
+           not (yield bitcoind.rpc_getinfo())['testnet']
+       )),
+       SUBSIDY_FUNC=lambda height: 337*100000000 >> (height + 1)//500000,
+       POW_FUNC=lambda data: pack.IntType(256).unpack(__import__('ltc_scrypt').getPoWHash(data)),
+       BLOCK_PERIOD=60, # s targetspacing
+       SYMBOL='NYAN',
+       CONF_FILE_FUNC=lambda: os.path.join(os.path.join(os.environ['APPDATA'], 'nyancoin') if platform.system() == 'Windows' else os.path.expanduser('~/Library/Application Support/nyancoin/') if platform.system() == 'Darwin' else os.path.expanduser('~/.nyancoin'), 'nyancoin.conf'),
+       BLOCK_EXPLORER_URL_PREFIX='http://nyancha.in/block/',
+       ADDRESS_EXPLORER_URL_PREFIX='http://nyancha.in/address/',
+       TX_EXPLORER_URL_PREFIX='http://nyancha.in/tx/',
+       SANE_TARGET_RANGE=(2**256//1000000000 - 1, 2**256//1000 - 1),
+       DUMB_SCRYPT_DIFF=2**16,
+       DUST_THRESHOLD=1e8,
+   ),
 )
 for net_name, net in nets.iteritems():
     net.NAME = net_name
