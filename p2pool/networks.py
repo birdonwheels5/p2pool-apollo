@@ -461,6 +461,27 @@ nets = dict(
         ANNOUNCE_CHANNEL='#cryptovein',
         VERSION_CHECK=lambda v: True,
     ),
+    megacoin=math.Object(
+        PARENT=networks.nets['megacoin'],
+        SHARE_PERIOD=5, # seconds target spacing
+        NEW_SHARE_PERIOD=5, # seconds target spacing
+        CHAIN_LENGTH=3*60*60//10, # shares
+        REAL_CHAIN_LENGTH=3*60*60//10, # shares
+        TARGET_LOOKBEHIND=20, # shares coinbase maturity
+        SPREAD=10, # blocks
+        NEW_SPREAD=10, # blocks
+        IDENTIFIER='D0D1D2D3B2F68CDD'.decode('hex'),
+        PREFIX='D0D3D4D541C11DDD'.decode('hex'),
+        P2P_PORT=8556,
+        MIN_TARGET=0,
+        MAX_TARGET=2**256//2**20 - 1,
+        PERSIST=False,
+        WORKER_PORT=9556,
+        BOOTSTRAP_ADDRS='us-east1.cryptovein.com'.split(' '),
+        ANNOUNCE_CHANNEL='#cryptovein',
+        VERSION_CHECK=lambda v: True,
+    ),
+
 
 )
 for net_name, net in nets.iteritems():
