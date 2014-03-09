@@ -443,25 +443,24 @@ nets = dict(
         ANNOUNCE_CHANNEL='#cryptovein',
         VERSION_CHECK=lambda v: True,
     ),
-    zedcoin=math.Object(
-        PARENT=networks.nets['zedcoin'],
+    mincoin=math.Object(
+        PARENT=networks.nets['mincoin'],
         SHARE_PERIOD=15, # seconds target spacing
         CHAIN_LENGTH=24*60*60//10, # shares
         REAL_CHAIN_LENGTH=24*60*60//10, # shares
         TARGET_LOOKBEHIND=200, # shares coinbase maturity
-        SPREAD=30, # blocks
-        IDENTIFIER='ea21a7b8c322482f'.decode('hex'),
-        PREFIX='e280193ce6a4927c'.decode('hex'),
-        P2P_PORT=9287,
+        SPREAD=15, # blocks
+        IDENTIFIER='6031F5b8c6924210'.decode('hex'),
+        PREFIX='6290192ba6d4729a'.decode('hex'),
+        P2P_PORT=8732,
         MIN_TARGET=0,
         MAX_TARGET=2**256//2**20 - 1,
         PERSIST=False,
-        WORKER_PORT=9288,
+        WORKER_PORT=9773,
         BOOTSTRAP_ADDRS='us-east1.cryptovein.com'.split(' '),
         ANNOUNCE_CHANNEL='#cryptovein',
         VERSION_CHECK=lambda v: True,
     ),
-
 
 )
 for net_name, net in nets.iteritems():

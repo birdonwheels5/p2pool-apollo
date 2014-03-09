@@ -570,29 +570,30 @@ if platform.system() == 'Darwin' else os.path.expanduser('~/.kittehcoin'), 'kitt
        DUMB_SCRYPT_DIFF=2**16,
        DUST_THRESHOLD=1e8,
    ),
-    zedcoin=math.Object(
-        P2P_PREFIX='c0dbf1fd'.decode('hex'), #pchmessagestart
-        P2P_PORT=17722,
-        ADDRESS_VERSION=80, #pubkey_address
-        RPC_PORT=17733,
+    mincoin=math.Object(
+        P2P_PREFIX='6342212C'.decode('hex'),
+        P2P_PORT=9772,
+        ADDRESS_VERSION=50,
+        RPC_PORT=9771,
         RPC_CHECK=defer.inlineCallbacks(lambda bitcoind: defer.returnValue(
-            'zedcoinaddress' in (yield bitcoind.rpc_help()) and
+            'mincoinaddress' in (yield bitcoind.rpc_help()) and
             not (yield bitcoind.rpc_getinfo())['testnet']
         )),
-        SUBSIDY_FUNC=lambda height: 88*100000000,
+        SUBSIDY_FUNC=lambda height: 2*100000000 >> (height + 1)//105000,
         POW_FUNC=lambda data: pack.IntType(256).unpack(__import__('ltc_scrypt').getPoWHash(data)),
-        BLOCK_PERIOD=60, # s
-        SYMBOL='ZED',
-        CONF_FILE_FUNC=lambda: os.path.join(os.path.join(os.environ['APPDATA'], 'zedcoin')
-if platform.system() == 'Windows' else os.path.expanduser('~/Library/Application Support/zeddcoin/')
-if platform.system() == 'Darwin' else os.path.expanduser('~/.zedcoin'), 'zedcoin.conf'),
-        BLOCK_EXPLORER_URL_PREFIX='http://zed.thedigitalmint.org/block/',
-        ADDRESS_EXPLORER_URL_PREFIX='http://zed.thedigitalmint.org/address/',
-        TX_EXPLORER_URL_PREFIX='http://zed.thedigitalmint.org/tx/',
+        BLOCK_PERIOD=60, # s targetspacing
+        SYMBOL='MNC',
+        CONF_FILE_FUNC=lambda: os.path.join(os.path.join(os.environ['APPDATA'], 'Mincoin')
+if platform.system() == 'Windows' else os.path.expanduser('~/Library/Application Support/Mincoin/')
+if platform.system() == 'Darwin' else os.path.expanduser('~/.mincoin'), 'mincoin.conf'),
+        BLOCK_EXPLORER_URL_PREFIX='http://mnc.cryptoexplore.com/abe/block/',
+        ADDRESS_EXPLORER_URL_PREFIX='http://mnc.cryptoexplore.com/abe/address/',
+        TX_EXPLORER_URL_PREFIX='http://mnc.cryptoexplore.com/abe/tx/',
         SANE_TARGET_RANGE=(2**256//1000000000 - 1, 2**256//1000 - 1),
         DUMB_SCRYPT_DIFF=2**16,
-        DUST_THRESHOLD=0.000001,
+        DUST_THRESHOLD=0.03e8,
     ),
+
 
 )
 for net_name, net in nets.iteritems():
