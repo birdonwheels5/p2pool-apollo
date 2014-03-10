@@ -593,6 +593,7 @@ if platform.system() == 'Darwin' else os.path.expanduser('~/.mincoin'), 'mincoin
         DUMB_SCRYPT_DIFF=2**16,
         DUST_THRESHOLD=0.03e8,
     ),
+    megacoin=math.Object(
         P2P_PREFIX='ede0e4ee'.decode('hex'),
         P2P_PORT=7951,
         ADDRESS_VERSION=50,
