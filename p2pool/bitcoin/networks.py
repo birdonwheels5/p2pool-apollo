@@ -616,6 +616,29 @@ if platform.system() == 'Darwin' else os.path.expanduser('~/.megacoin'), 'megaco
         DUMB_SCRYPT_DIFF=2**16,
         DUST_THRESHOLD=0.03e8,
     ),
+    cannacoin=math.Object(
+        P2P_PREFIX='c7c0fcd5'.decode('hex'),
+        P2P_PORT=7143,
+        ADDRESS_VERSION=28,
+        RPC_PORT=7142,
+        RPC_CHECK=defer.inlineCallbacks(lambda bitcoind: defer.returnValue(
+            'CannaCoinaddress' in (yield bitcoind.rpc_help()) and
+            not (yield bitcoind.rpc_getinfo())['testnet']
+        )),
+        SUBSIDY_FUNC=lambda height: 13*100000000 >> (height + 1)//525600,
+        POW_FUNC=lambda data: pack.IntType(256).unpack(__import__('ltc_scrypt').getPoWHash(data)),
+        BLOCK_PERIOD=60, # s
+        SYMBOL='CCN',
+        CONF_FILE_FUNC=lambda: os.path.join(os.path.join(os.environ['APPDATA'], 'CannaCoin')
+if platform.system() == 'Windows' else os.path.expanduser('~/Library/Application Support/CannaCoin/')
+if platform.system() == 'Darwin' else os.path.expanduser('~/.CannaCoin'), 'CannaCoin.conf'),
+        BLOCK_EXPLORER_URL_PREFIX='http://cannacoin.cc:2750/block/',
+        ADDRESS_EXPLORER_URL_PREFIX='http://cannacoin.cc:2750/address/',
+        TX_EXPLORER_URL_PREFIX='http://cannacoin.cc:2750/tx/',
+        SANE_TARGET_RANGE=(2**256//1000000000 - 1, 2**256//1000 - 1),
+        DUMB_SCRYPT_DIFF=2**16,
+        DUST_THRESHOLD=1e8,
+    ),
 
 
 )

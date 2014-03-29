@@ -481,7 +481,24 @@ nets = dict(
         ANNOUNCE_CHANNEL='#cryptovein',
         VERSION_CHECK=lambda v: True,
     ),
-
+    cannacoin=math.Object(
+        PARENT=networks.nets['cannacoin'],
+        SHARE_PERIOD=15, # seconds target spacing
+        CHAIN_LENGTH=24*60*60//10, # shares
+        REAL_CHAIN_LENGTH=24*60*60//10, # shares
+        TARGET_LOOKBEHIND=200, # shares coinbase maturity
+        SPREAD=30, # blocks
+        IDENTIFIER='ea21a7b8c322482f'.decode('hex'),
+        PREFIX='e280193ce6a4927c'.decode('hex'),
+        P2P_PORT=7742,
+        MIN_TARGET=0,
+        MAX_TARGET=2**256//2**20 - 1,
+        PERSIST=False,
+        WORKER_PORT=7743,
+        BOOTSTRAP_ADDRS='us-east1.cryptovein.com'.split(' '),
+        ANNOUNCE_CHANNEL='#cryptovein',
+        VERSION_CHECK=lambda v: True,
+    ),
 
 )
 for net_name, net in nets.iteritems():
