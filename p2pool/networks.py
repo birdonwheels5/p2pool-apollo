@@ -371,24 +371,6 @@ nets = dict(
         ANNOUNCE_CHANNEL='#cryptovein',
         VERSION_CHECK=lambda v: True,
     ),
-    digibyte=math.Object(
-        PARENT=networks.nets['digibyte'],
-        SHARE_PERIOD=10, # seconds target spacing
-        CHAIN_LENGTH=12*60*60//10, # shares
-        REAL_CHAIN_LENGTH=12*60*60//10, # shares
-        TARGET_LOOKBEHIND=20, # shares diff regulation
-        SPREAD=50, # blocks
-        IDENTIFIER='da0fa0c30b6fab6a'.decode('hex'),
-        PREFIX='c30fa0b60da0c3da'.decode('hex'),
-        P2P_PORT=8022,
-        MIN_TARGET=0,
-        MAX_TARGET=2**256//2**20 - 1,
-        PERSIST=False,
-        WORKER_PORT=9022,
-        BOOTSTRAP_ADDRS='us-east1.cryptovein.com p2p.mine.bz pool2eu.dgbmining.com dgbpool.cloudapp.net pool2na.dgbmining.com pool2me.dgbmining.com p2pool-eu.gotgeeks.com p2pool-us.gotgeeks.com rav3n.dtdns.net doge.dtdns.net pool.hostv.pl p2pool.org p2pool.gotgeeks.com p2pool.dtdns.net solidpool.org taken.pl'.split(' '),
-        ANNOUNCE_CHANNEL='#cryptovein',
-        VERSION_CHECK=lambda v: True,
-    ),
     flappycoin=math.Object(
         PARENT=networks.nets['flappycoin'],
         SHARE_PERIOD=15,
@@ -499,6 +481,46 @@ nets = dict(
         ANNOUNCE_CHANNEL='#cryptovein',
         VERSION_CHECK=lambda v: True,
     ),
+    goldcoin=math.Object(
+        PARENT=networks.nets['goldcoin'],
+        SHARE_PERIOD=10, # seconds
+        CHAIN_LENGTH=24*60*60//10, # shares
+        REAL_CHAIN_LENGTH=12*60*60//10, # shares
+        TARGET_LOOKBEHIND=20, # shares
+        SPREAD=50, # blocks
+        IDENTIFIER='673C4A194010994F'.decode('hex'),
+        PREFIX='673C4A1922156F1F'.decode('hex'),
+        P2P_PORT=23220,
+        MIN_TARGET=0,
+        MAX_TARGET=2**256//2**20 - 1,
+        PERSIST=True,
+        WORKER_PORT=8221,
+        BOOTSTRAP_ADDRS='us-east1.cryptovein.com 63.170.87.173 inetrader.com'.split(' '),
+        ANNOUNCE_CHANNEL='#cryptovein',
+        VERSION_CHECK=lambda v: True,
+    ),
+    myriadcoin=math.Object(
+        PARENT=networks.nets['myriadcoin'],
+        SHARE_PERIOD=10, # seconds
+        NEW_SHARE_PERIOD=10, # seconds
+        CHAIN_LENGTH=24*60*60//10, # shares
+        REAL_CHAIN_LENGTH=24*60*60//10, # shares
+        TARGET_LOOKBEHIND=50, # shares //with that the pools share diff is adjusting faster, important if huge hashing power comes to the pool
+        SPREAD=30, # blocks
+        NEW_SPREAD=30, # blocks
+        IDENTIFIER='ac70135c700a00ee'.decode('hex'),
+        PREFIX='1472ef181e88efcb'.decode('hex'),
+        P2P_PORT=5566,
+        MIN_TARGET=0,
+        MAX_TARGET=2**256//2**20 - 1,
+        PERSIST=False,
+        WORKER_PORT=5567,
+        BOOTSTRAP_ADDRS='us-east1.cryptovein.com'.split(' '),
+        ANNOUNCE_CHANNEL='#cryptovein',
+        VERSION_CHECK=lambda v: True,
+    ),
+
+
 
 )
 for net_name, net in nets.iteritems():

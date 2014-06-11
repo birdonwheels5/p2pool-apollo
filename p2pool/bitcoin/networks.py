@@ -484,27 +484,6 @@ if platform.system() == 'Darwin' else os.path.expanduser('~/.smartcoin'), 'smart
         DUMB_SCRYPT_DIFF=2**16,
         DUST_THRESHOLD=0,
     ),
-digibyte=math.Object(
-        P2P_PREFIX='fac3b6da'.decode('hex'), #pchmessagestart
-        P2P_PORT=12024,
-        ADDRESS_VERSION=30, #pubkey_address
-        RPC_PORT=14022,
-        RPC_CHECK=defer.inlineCallbacks(lambda bitcoind: defer.returnValue(
-            'digibyteaddress' in (yield bitcoind.rpc_help()) and
-            not (yield bitcoind.rpc_getinfo())['testnet']
-        )),
-        SUBSIDY_FUNC=lambda height: 8000*100000000 >> (height + 1)//1051200,
-        POW_FUNC=lambda data: pack.IntType(256).unpack(__import__('ltc_scrypt').getPoWHash(data)),
-        BLOCK_PERIOD=60, # s
-        SYMBOL='DGB',
-        CONF_FILE_FUNC=lambda: os.path.join(os.path.join(os.environ['APPDATA'], 'digibyte') if platform.system() == 'Windows' else os.path.expanduser('~/Library/Application Support/digibyte/') if platform.system() == 'Darwin' else os.path.expanduser('~/.digibyte'), 'digibyte.conf'),
-        BLOCK_EXPLORER_URL_PREFIX='http://altexplorer.net/block/',
-        ADDRESS_EXPLORER_URL_PREFIX='http://altexplorer.net/address/',
-        TX_EXPLORER_URL_PREFIX='http://altexplorer.net/tx/',
-        SANE_TARGET_RANGE=(2**256//1000000000 - 1, 2**256//1000 - 1),
-        DUMB_SCRYPT_DIFF=2**16,
-        DUST_THRESHOLD=0.0001,
-    ),
     flappycoin=math.Object(
         P2P_PREFIX='c1c1c1c1'.decode('hex'),
         P2P_PORT=11556,
@@ -638,6 +617,48 @@ if platform.system() == 'Darwin' else os.path.expanduser('~/.CannaCoin'), 'Canna
         SANE_TARGET_RANGE=(2**256//1000000000 - 1, 2**256//1000 - 1),
         DUMB_SCRYPT_DIFF=2**16,
         DUST_THRESHOLD=1e8,
+    ),
+    goldcoin=math.Object(
+        P2P_PREFIX='fdc2b4dd'.decode('hex'),
+        P2P_PORT=8121,
+        ADDRESS_VERSION=32,
+        RPC_PORT=8122,
+        RPC_CHECK=defer.inlineCallbacks(lambda bitcoind: defer.returnValue(
+            'goldcoinaddress' in (yield bitcoind.rpc_help()) and
+            not (yield bitcoind.rpc_getinfo())['testnet']
+        )),
+        SUBSIDY_FUNC=lambda height: 45*100000000 >> (height + 1)//26325000,
+        POW_FUNC=lambda data: pack.IntType(256).unpack(__import__('ltc_scrypt').getPoWHash(data)),
+        BLOCK_PERIOD=120, # s
+        SYMBOL='GLD',
+        CONF_FILE_FUNC=lambda: os.path.join(os.path.join(os.environ['APPDATA'], 'Goldcoin') if platform.system() == 'Windows' else os.path.expanduser('~/Library/Application Support/Goldcoin/') if platform.system() == 'Darwin' else os.path.expanduser('~/.goldcoin'), 'goldcoin.conf'),
+        BLOCK_EXPLORER_URL_PREFIX='http://gld.cryptocoinexplorer.com/block/', #dummy
+        ADDRESS_EXPLORER_URL_PREFIX='http://gld.cryptocoinexplorer.com/address/',
+        TX_EXPLORER_URL_PREFIX='http://gld.cryptocoinexplorer.com/tx/',
+        SANE_TARGET_RANGE=(2**256//1000000000 - 1, 2**256//1000 - 1),
+        DUMB_SCRYPT_DIFF=2**16,
+        DUST_THRESHOLD=0.0001e8,
+    ),
+    myriadcoin=math.Object(
+        P2P_PREFIX='af4576ee'.decode('hex'),
+        P2P_PORT=10888,
+        ADDRESS_VERSION=50,
+        RPC_PORT=10889,
+        RPC_CHECK=defer.inlineCallbacks(lambda bitcoind: defer.returnValue(
+            'myriadcoinaddress' in (yield bitcoind.rpc_help()) and
+            not (yield bitcoind.rpc_getinfo())['testnet']
+        )),
+        SUBSIDY_FUNC=lambda height: 1000*2000000000000 >> (height + 1)//967680,
+        POW_FUNC=lambda data: pack.IntType(256).unpack(__import__('ltc_scrypt').getPoWHash(data)),
+        BLOCK_PERIOD=30, # s
+        SYMBOL='MYR',
+        CONF_FILE_FUNC=lambda: os.path.join(os.path.join(os.environ['APPDATA'], 'Myriadcoin') if platform.system() == 'Windows' else os.path.expanuser('~/Library/Application Support/Myriadcoin/') if platform.system() == 'Darwin' else os.path.expanduser('~/.myriadcoin'), 'myriadcoin.conf'),
+        BLOCK_EXPLORER_URL_PREFIX='http://explorerino.com/block/',
+        ADDRESS_EXPLORER_URL_PREFIX='http://explorerino.com/address/',
+        TX_EXPLORER_URL_PREFIX='http://explorerino.com/tx/',
+        SANE_TARGET_RANGE=(2**256//2**32//1000 - 1, 2**256//2**24 - 1),
+        DUMB_SCRYPT_DIFF=2**16,
+        DUST_THRESHOLD=0.001e8,
     ),
 
 
