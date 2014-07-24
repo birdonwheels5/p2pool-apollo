@@ -639,7 +639,7 @@ if platform.system() == 'Darwin' else os.path.expanduser('~/.CannaCoin'), 'Canna
         DUMB_SCRYPT_DIFF=2**16,
         DUST_THRESHOLD=0.0001e8,
     ),
-    myriadcoin=math.Object(
+    myriad_scrypt=math.Object(
         P2P_PREFIX='af4576ee'.decode('hex'),
         P2P_PORT=10888,
         ADDRESS_VERSION=50,
