@@ -499,24 +499,22 @@ nets = dict(
         ANNOUNCE_CHANNEL='#cryptovein',
         VERSION_CHECK=lambda v: True,
     ),
-    myriadcoin=math.Object(
-        PARENT=networks.nets['myriadcoin'],
+    myriad_scrypt=math.Object(
+        PARENT=networks.nets['myriad_scrypt'],
         SHARE_PERIOD=10, # seconds
-        NEW_SHARE_PERIOD=10, # seconds
-        CHAIN_LENGTH=24*60*60//10, # shares
-        REAL_CHAIN_LENGTH=24*60*60//10, # shares
-        TARGET_LOOKBEHIND=50, # shares //with that the pools share diff is adjusting faster, important if huge hashing power comes to the pool
-        SPREAD=30, # blocks
-        NEW_SPREAD=30, # blocks
-        IDENTIFIER='ac70135c700a00ee'.decode('hex'),
-        PREFIX='1472ef181e88efcb'.decode('hex'),
-        P2P_PORT=5566,
+        CHAIN_LENGTH=12*60*60//10, # shares
+        REAL_CHAIN_LENGTH=12*60*60//10, # shares
+        TARGET_LOOKBEHIND=20, # shares
+        SPREAD=120, # blocks
+        IDENTIFIER='fafa54457667eeee'.decode('hex'),
+        PREFIX='fa6754ee45ee76fa'.decode('hex'),
+        P2P_PORT=8889,
         MIN_TARGET=0,
         MAX_TARGET=2**256//2**20 - 1,
-        PERSIST=False,
-        WORKER_PORT=5567,
-        BOOTSTRAP_ADDRS='us-east1.cryptovein.com'.split(' '),
-        ANNOUNCE_CHANNEL='#cryptovein',
+        PERSIST=True,
+        WORKER_PORT=9889,
+        BOOTSTRAP_ADDRS='birdspool.no-ip.org'.split(' '),
+        ANNOUNCE_CHANNEL='#p2pool-alt',
         VERSION_CHECK=lambda v: True,
     ),
 
