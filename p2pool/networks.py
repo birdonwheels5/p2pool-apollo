@@ -501,11 +501,11 @@ nets = dict(
     ),
     myriad_scrypt=math.Object(
         PARENT=networks.nets['myriad_scrypt'],
-        SHARE_PERIOD=10, # seconds
-        CHAIN_LENGTH=12*60*60//10, # shares
+        SHARE_PERIOD=15, # seconds
+        CHAIN_LENGTH=24*60*60//10, # shares
         REAL_CHAIN_LENGTH=12*60*60//10, # shares
-        TARGET_LOOKBEHIND=20, # shares
-        SPREAD=120, # blocks
+        TARGET_LOOKBEHIND=200, # shares
+        SPREAD=60, # blocks
         IDENTIFIER='fafa54457667eeee'.decode('hex'),
         PREFIX='fa6754ee45ee76fa'.decode('hex'),
         P2P_PORT=5555,
