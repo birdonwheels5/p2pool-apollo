@@ -657,7 +657,7 @@ if platform.system() == 'Darwin' else os.path.expanduser('~/.CannaCoin'), 'Canna
         ADDRESS_EXPLORER_URL_PREFIX='http://myr.theblockexplorer.com:2750/address/',
         TX_EXPLORER_URL_PREFIX='http://myr.theblockexplorer.com:2750/tx/',
         SANE_TARGET_RANGE=(2**256//2**32//1000 - 1, 2**256//2**20 - 1),
-        DUMB_SCRYPT_DIFF=1,
+        DUMB_SCRYPT_DIFF=2**16,
         DUST_THRESHOLD=0.001e8,
     ),
 
