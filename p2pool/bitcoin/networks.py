@@ -19,7 +19,7 @@ nets = dict(
     apollocoin=math.Object(
         P2P_PREFIX='fcc1b7dc'.decode('hex'),
         P2P_PORT=55888,
-        ADDRESS_VERSION=50,
+        ADDRESS_VERSION=33,
         RPC_PORT=31914,
         RPC_CHECK=defer.inlineCallbacks(lambda bitcoind: defer.returnValue(
             'apollocoinaddress' in (yield bitcoind.rpc_help()) and
